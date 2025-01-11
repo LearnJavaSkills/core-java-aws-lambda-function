@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+}
+
+group = 'in.learnjavaskills'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // Defines handler method interfaces and the context object that the runtime passes to the handler.
+    //  If you define your own input types, this is the only library that you need.
+    implementation 'com.amazonaws:aws-lambda-java-core:1.2.3'
+
+    // Optional - Input types for events from aws services that invoke Lambda functions.
+    implementation 'com.amazonaws:aws-lambda-java-events:3.14.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// building bundle jar to deploy in aws lambda
+jar {
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+}
